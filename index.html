@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <style>
+        .user{
+            background-color: #ddd;
+            padding: 1mm;
+            margin-bottom: 1mm;
+        }
+        .butto {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+          }
+    </style>
+</head>
+<body>
+
+    <div id="view"></div>
+
+    <div id="api"></div>
+</body>
+
+
+<script type="text/javascript">
+    
+
+function fetchData()
+{
+    fetch("https://jsonplaceholder.typicode.com/users").then(response =>{
+        if(response.ok){
+            console.log(response)
+            // throw Error("ERROR");
+        }
+        return response.json();
+    }).then(data =>{
+        //console.log(data); 
+        const html =data.map(user =>{
+            
+            return `
+            <div class='user'>
+            <p>Name:${user.name}</p>
+            <p>Email:${user.email}</p>
+
+            <a href='#' onclick='view(${user.id})' >View Post </a>
+            </div>
+            `;
+        }).join('')
+
+        document.querySelector("#api").insertAdjacentHTML("afterbegin",html);
+    }).catch(error =>{
+        // console.log(error)
+        
+    });
+    
+}
+
+fetchData();
+
+
+function view(id){
+
+
+    fetch("https://jsonplaceholder.typicode.com/posts/"+id).then(response =>{
+        if(response.ok){
+
+            // throw Error("ERROR");
+        }
+        return response.json();
+
+    }).then(Post =>{
+
+        console.log(Post); 
+
+        const html =
+            `
+            <div class='user'>
+            <p>Title:${Post.title}</p>
+            <p>Body:${Post.body}</p>
+
+            </div>
+            `;
+
+        console.log(html);
+
+        document.querySelector("#api").innerHTML = html;
+
+    }).catch(error =>{
+        // console.log(error)
+        
+    });
+
+
+
+
+
+}
+
+
+
+
+
+</script>
+
+</html>
